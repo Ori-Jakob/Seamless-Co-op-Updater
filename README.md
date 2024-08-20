@@ -5,7 +5,7 @@ When the new update is downloaded and applied, the old configuration settings fr
 
 # Install
 
-Make sure Python 3 is installed and downloaded then:
+Make sure Python 3 is installed then:
 
 1. Download seamless-update.py
 2. Place the script in the ELDEN RING/Game folder
