@@ -1,4 +1,8 @@
-import subprocess, os, time
+import subprocess, os, time, requests
+
+
+
+
 
 def check_dependency(package):
     try:
@@ -7,15 +11,50 @@ def check_dependency(package):
       import sys
       subprocess.check_call([sys.executable, '-m', 'pip', 'install', package])
 
+
+
+
+
+#needs to have external library dload installed. If not installed, install it.
 check_dependency('dload')
-
-
 import configparser, dload
 
-script_dir = os.path.dirname(os.path.realpath(__file__))
-sleep_duration = 5
+
+
+
+
+def checkForUpdate(data):
+
+  global _sleep_duration
+
+  try:
+    with open('./SeamlessCoop/version.txt', 'r') as version:
+      ver = version.readline()
+      if ver == data:
+        print(f"Already Updated to the latest version (v{data}). Skipping Update...")
+        _sleep_duration = 2
+        return False
+
+  except OSError:
+    with open('./SeamlessCoop/version.txt', 'w') as version:
+      version.write(data)
+
+  return True
+
+
+
+
+
+script_dir = os.path.dirname(os.path.realpath(__file__)) 
+_sleep_duration = 5
+
+
+
+
 
 def main():
+
+  global _sleep_duration
 
   #Grab the original configuration
   original_config, new_config = configparser.ConfigParser(), configparser.ConfigParser()
@@ -28,45 +67,62 @@ def main():
     original_config = None
 
 
-  #Install the new update
+  #Check if update exists based on previous install
+
+  data = requests.get("https://github.com/LukeYui/EldenRingSeamlessCoopRelease/releases/latest").url[70:]
+  if not checkForUpdate(data): return #don't bother running everything else if already on the latest version
+  
+    
+  
+  #Install the new update if needed
+  print(f"New update found! Updating to v{data}")
   url = 'https://github.com/LukeYui/EldenRingSeamlessCoopRelease/releases/latest/download/ersc.zip'
+
   print('Downloading Latest Update...')
   dload.save_unzip(url, './', delete_after=True) #unzip to root of script file
   print('Done!\n')
 
+#update version.txt
+  with open('./SeamlessCoop/version.txt', 'w') as version:
+      version.write(data)
 
-  #Apply original configuration to the new configuration if old one exists
+
+#Apply original configuration to the new configuration if old one exists
   if original_config != None:
 
     new_config.read('./SeamlessCoop/ersc_settings.ini')
     print('Transferring configuration file...')
 
-
     for x in new_config:
         for i in new_config[x]:
-          if i in original_config[x]: #check to see if parameter exists in the original. We don't want an error!
+          if i in original_config[x]: #check to see if parameter exists in the original. We don't want an error for accessing an invalid parameter.
             new_config[x][i] = original_config[x][i] 
 
     with open('./SeamlessCoop/ersc_settings.ini', 'w') as config:
-        new_config.write(config) #due to limitations of the configparser, comments will not be transfered to the new config
+        new_config.write(config) #due to limitations of python lib configparser, comments will not be transfered to the new config
+
     print("Done!\n")
+
   else:
      print("No configuration detected. Skipping configuration transfer.")
 
   print('Everything Has Completed Successfully! You can launch the game now.')
      
 
+
+
+
 if __name__ == "__main__":
    
   path = "ELDEN RING\\Game" if os.name == "nt" else "ELDEN RING/Game"
   
-  if os.path.exists('./eldenring.exe'):
+  if os.path.exists('./eldenring.exe') and script_dir[-15:] == path:
     main()
   else:
-    print(f"ERROR: Current script location -> '{script_dir}'")
+    print(f"ERROR: script is in the wrong location.'")
     print(f"The file is in the wrong path. Make sure it is placed and ran from '{path}'.")
 
-  print(f'Exiting in {sleep_duration} seconds...')
-  time.sleep(sleep_duration)
+  print(f'Exiting in {_sleep_duration} seconds...')
+  time.sleep(_sleep_duration)
 
 
