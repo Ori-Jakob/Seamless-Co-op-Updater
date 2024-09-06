@@ -16,7 +16,7 @@ When the new update is downloaded and applied, the old configuration settings fr
 
 **_With the executable, a Python 3 runtime environment is bundled in the it so Python is not required to be installed for it to work_**
 
-1. Download seamless-update.exe from [Releases](https://github.com/Ori-Jakob/Seamless-Co-op-Updater/releases/tag/v0.1).
+1. Download seamless-update.exe from [Releases](https://github.com/Ori-Jakob/Seamless-Co-op-Updater/releases/latest).
 2. Place the executable in the ELDEN RING/Game folder
 3. Run the executable in the directory
 
