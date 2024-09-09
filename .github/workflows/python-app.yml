@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  build-linux:
 
     runs-on: ubuntu-latest
 
@@ -28,7 +28,26 @@ jobs:
         python -m pip install --upgrade pip
         pip install pyinstaller
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: create exe with pyinstaller
+    - name: Create exe with pyinstaller
       run: |
-        pyinstaller --onefile --optimize 2 ./seamless-update.py
+        pyinstaller --onefile --optimize 2 --name seamless-update.exe ./seamless-update.py
+    
+  build-windows:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Create exe with pyinstaller
+      run: |
+        pyinstaller --onefile --optimize 2 --name seamless-update.exe .\seamless-update.py
     
