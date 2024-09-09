@@ -27,9 +27,15 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pyinstaller
-    - name: Create exe with pyinstaller
+    - name: Create ELF with pyinstaller
       run: |
-        pyinstaller --onefile --optimize 2 --name seamless-update.exe ./seamless-update.py
+        pyinstaller --onefile --optimize 2 --name seamless-update.elf ./seamless-update.py
+    - name: Archive and Post
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-linux
+        path: |
+          .\dist\seamless-update.elf
     
   build-windows:
 
@@ -45,7 +51,14 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pyinstaller
-    - name: Create exe with pyinstaller
+    - name: Create EXE with pyinstaller
       run: |
         pyinstaller --onefile --optimize 2 --name seamless-update.exe .\seamless-update.py
+    - name: Archive and Post
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-windows
+        path: |
+          .\dist\seamless-update.exe
+        
     
