@@ -35,7 +35,7 @@ jobs:
       with:
         name: build-linux
         path: |
-          .\dist\seamless-update.elf
+          ./dist/seamless-update.elf
     
   build-windows:
 
