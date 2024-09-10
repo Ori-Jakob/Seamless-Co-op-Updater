@@ -15,7 +15,7 @@ permissions:
 jobs:
   build-linux:
 
-    runs-on: fedora-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
@@ -29,13 +29,13 @@ jobs:
         pip install pyinstaller
     - name: Create ELF with pyinstaller
       run: |
-        pyinstaller --onefile --optimize 2 --name seamless-update.elf ./seamless-update.py
+        pyinstaller --onefile --optimize 2 --name seamless-update ./seamless-update.py
     - name: Archive and Post
       uses: actions/upload-artifact@v4
       with:
         name: seamless-update-linux
         path: |
-          ./dist/seamless-update.elf
+          ./dist/seamless-update*
     
   build-windows:
 
