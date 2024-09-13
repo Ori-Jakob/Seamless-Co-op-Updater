@@ -116,7 +116,7 @@ if __name__ == "__main__":
    
   path = "ELDEN RING\\Game" if os.name == "nt" else "ELDEN RING/Game"
   
-  if os.path.exists('./eldenring.exe') and script_dir[-15:] == path:
+  if os.path.exists('./eldenring.exe'):
     main()
   else:
     print(f"ERROR: script is in the wrong location.'")
