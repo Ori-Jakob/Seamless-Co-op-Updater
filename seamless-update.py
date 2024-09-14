@@ -27,6 +27,10 @@ def checkForUpdate(data):
 
   global _sleep_duration
 
+  if not os.path.exists("./SeamlessCoop"):
+      print("Seamless Coop not found. Donwloading Seamless Coop...")
+      return True
+      
   try:
     with open('./SeamlessCoop/version.txt', 'r') as version:
       ver = version.readline()
@@ -39,6 +43,7 @@ def checkForUpdate(data):
     with open('./SeamlessCoop/version.txt', 'w') as version:
       version.write(data)
 
+  print(f"New update found! Updating to v{data}")
   return True
 
 
@@ -75,7 +80,6 @@ def main():
     
   
   #Install the new update if needed
-  print(f"New update found! Updating to v{data}")
   url = 'https://github.com/LukeYui/EldenRingSeamlessCoopRelease/releases/latest/download/ersc.zip'
 
   print('Downloading Latest Update...')
