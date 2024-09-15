@@ -1,4 +1,4 @@
-import subprocess, os, time, requests
+import subprocess, os, time, configparser
 
 
 
@@ -14,10 +14,11 @@ def check_dependency(package):
 
 
 
-
 #needs to have external library dload installed. If not installed, install it.
 check_dependency('dload')
-import configparser, dload
+check_dependency('requests')
+
+import requests, dload
 
 
 
@@ -28,14 +29,15 @@ def checkForUpdate(data):
   global _sleep_duration
 
   if not os.path.exists("./SeamlessCoop"):
-      print("Seamless Coop not found. Donwloading Seamless Coop...")
+      print(f"Seamless Coop not found. ")
       return True
+
       
   try:
     with open('./SeamlessCoop/version.txt', 'r') as version:
       ver = version.readline()
       if ver == data:
-        print(f"Already Updated to the latest version (v{data}). Skipping Update...")
+        print(f"Already Updated to the latest version ({data}). Skipping Update...")
         _sleep_duration = 2
         return False
 
@@ -43,7 +45,7 @@ def checkForUpdate(data):
     with open('./SeamlessCoop/version.txt', 'w') as version:
       version.write(data)
 
-  print(f"New update found! Updating to v{data}")
+  print(f"New update found! -> {data}")
   return True
 
 
@@ -82,7 +84,7 @@ def main():
   #Install the new update if needed
   url = 'https://github.com/LukeYui/EldenRingSeamlessCoopRelease/releases/latest/download/ersc.zip'
 
-  print('Downloading Latest Update...')
+  print(f'Downloading Seamless Coop release {data}...')
   dload.save_unzip(url, './', delete_after=True) #unzip to root of script file
   print('Done!\n')
 
