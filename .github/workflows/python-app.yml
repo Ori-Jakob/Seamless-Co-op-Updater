@@ -30,7 +30,7 @@ jobs:
         pip install pyinstaller
     - name: Create EXE with pyinstaller
       run: |
-        pyinstaller --onefile --optimize 2 --icon ./icon/ersc_u.ico --name seamless-update.exe ./seamless-update.py
+        pyinstaller --onefile --optimize 2 --icon ./icon/ersc_u.ico --name seamless-update.elf ./seamless-update.py
     - name: Archive and Post
       uses: actions/upload-artifact@v4
       with:
