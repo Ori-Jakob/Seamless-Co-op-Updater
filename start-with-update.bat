@@ -3,7 +3,7 @@
 IF EXIST .\seamless-update.exe (
     .\seamless-update.exe
 ) ELSE IF EXIST .\seamless-update.py (
-    .\seamless-update.py
+    python .\seamless-update.py
 ) ELSE (
 	ECHO 'seamless-update' not found...
 )
