@@ -6,6 +6,7 @@ class Game:
       self.url = str()
       self.code = str()
       self.exe = str()
+      self.found = False
 
 
 
@@ -57,13 +58,14 @@ def checkForUpdate(data):
 
 
 script_dir = str()
+SUPPORTED_GAMES = ["ELDEN RING", "DARK SOULS III"]
 
 if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
     script_dir = os.path.dirname(sys.executable)
 else:
     script_dir = os.path.dirname(__file__)
 
-_sleep_duration = 5
+_sleep_duration = 3
 game = Game()
 
 def set_game():
@@ -73,11 +75,15 @@ def set_game():
     game.code = "er"
     game.name = "ELDEN RING"
     game.exe = "eldenring.exe"
-  else:
+    game.found = True
+  elif script_dir.upper().count("DARK SOULS III") > 0:
     game.url = "https://github.com/LukeYui/DarkSouls3SeamlessCoopRelease/releases/latest"
     game.code = "ds3"
     game.name = "DARK SOULS III"
     game.exe = "DarkSoulsIII.exe"
+    game.found = True
+  else:
+    game.name = ' or '.join(["'{0}{1}Game'".format(x,"\\" if os.name == "nt" else "/") for x in SUPPORTED_GAMES])
 
 
 
@@ -136,7 +142,7 @@ def main():
   else:
      print("No configuration detected. Skipping configuration transfer.")
 
-  print('Everything Has Completed Successfully! You can launch the game now.')
+  print('Everything Has completed successfully! You can launch the game now.')
      
 
 
@@ -144,13 +150,13 @@ def main():
 
 if __name__ == "__main__":
   set_game()
-  path = f"{game.name}\\Game" if os.name == "nt" else f"{game.name}/Game"
-  
-  if os.path.exists(f'./{game.exe}'):
+
+  if game.found and os.path.exists(f'./{game.exe}'):
     main()
   else:
     print(f"ERROR: script is in the wrong location.'")
-    print(f"The file is in the wrong path. Make sure it is placed and ran from '{path}'.")
+    print(f"The file is in the wrong path. Make sure it is placed and ran from {game.name}.")
 
-  print(f'Exiting in {_sleep_duration} seconds...')
-  time.sleep(_sleep_duration)
+  for x in range(_sleep_duration):
+    print(f'\rExiting in {_sleep_duration - x} seconds...', end="")
+    time.sleep(1)
