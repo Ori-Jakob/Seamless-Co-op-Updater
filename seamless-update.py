@@ -1,6 +1,11 @@
 import subprocess, os, sys, time, configparser
 
-
+class Game:
+   def __init__(self):
+      self.name = str()
+      self.url = str()
+      self.code = str()
+      self.exe = str()
 
 
 
@@ -59,52 +64,49 @@ else:
     script_dir = os.path.dirname(__file__)
 
 _sleep_duration = 5
-game = dict()
+game = Game()
 
 def set_game():
   global game
   if script_dir.upper().count("ELDEN RING") > 0:
-    game = {
-      "url": "https://github.com/LukeYui/EldenRingSeamlessCoopRelease/releases/latest",
-      "code": "er",
-      "name": "ELDEN RING",
-      "exe": "eldenring.exe"
-    }
+    game.url = "https://github.com/LukeYui/EldenRingSeamlessCoopRelease/releases/latest"
+    game.code = "er"
+    game.name = "ELDEN RING"
+    game.exe = "eldenring.exe"
   else:
-    game = {
-      "url": "https://github.com/LukeYui/DarkSouls3SeamlessCoopRelease/releases/latest",
-      "code": "ds3",
-      "name": "DARK SOULS III",
-      "exe": "DarkSoulsIII.exe"
-    }
+    game.url = "https://github.com/LukeYui/DarkSouls3SeamlessCoopRelease/releases/latest"
+    game.code = "ds3"
+    game.name = "DARK SOULS III"
+    game.exe = "DarkSoulsIII.exe"
 
 
 
 def main():
 
   global _sleep_duration, game
-  print(script_dir)
-  print(f"Detected Game: {game["name"]}\n")
+
+  print(f"Path = {script_dir}")
+  print(f"Detected Game: {game.name}\n")
   #Grab the original configuration
   original_config, new_config = configparser.ConfigParser(), configparser.ConfigParser()
 
 
   #check if original ini exists for config transfer
-  if os.path.exists(f'./SeamlessCoop/{game["code"]}sc_settings.ini'):
-    original_config.read(f'./SeamlessCoop/{game["code"]}sc_settings.ini') 
+  if os.path.exists(f'./SeamlessCoop/{game.code}sc_settings.ini'):
+    original_config.read(f'./SeamlessCoop/{game.code}sc_settings.ini') 
   else:
     original_config = None
 
 
   #Check if update exists based on previous install
 
-  data = requests.get(game["url"]).url[70:]
+  data = requests.get(game.url).url[70:]
   if not checkForUpdate(data): return #don't bother running everything else if already on the latest version
   
     
   
   #Install the new update if needed
-  url = f'{game["url"]}/download/ersc.zip'
+  url = f'{game.url}/download/ersc.zip'
 
   print(f'Downloading Seamless Coop release {data}...')
   dload.save_unzip(url, './', delete_after=True) #unzip to root of script file
@@ -118,7 +120,7 @@ def main():
 #Apply original configuration to the new configuration if old one exists
   if original_config != None:
 
-    new_config.read(f'./SeamlessCoop/{game["code"]}sc_settings.ini')
+    new_config.read(f'./SeamlessCoop/{game.code}sc_settings.ini')
     print('Transferring configuration file...')
 
     for x in new_config:
@@ -126,7 +128,7 @@ def main():
           if i in original_config[x]: #check to see if parameter exists in the original. We don't want an error for accessing an invalid parameter.
             new_config[x][i] = original_config[x][i] 
 
-    with open(f'./SeamlessCoop/{game["code"]}sc_settings.ini', 'w') as config:
+    with open(f'./SeamlessCoop/{game.code}sc_settings.ini', 'w') as config:
         new_config.write(config) #due to limitations of python lib configparser, comments will not be transfered to the new config
 
     print("Done!\n")
@@ -142,9 +144,9 @@ def main():
 
 if __name__ == "__main__":
   set_game()
-  path = f"{game["name"]}\\Game" if os.name == "nt" else f"{game["name"]}/Game"
+  path = f"{game.name}\\Game" if os.name == "nt" else f"{game.name}/Game"
   
-  if os.path.exists(f'./{game["exe"]}'):
+  if os.path.exists(f'./{game.exe}'):
     main()
   else:
     print(f"ERROR: script is in the wrong location.'")
