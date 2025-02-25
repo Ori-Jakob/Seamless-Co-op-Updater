@@ -160,3 +160,4 @@ if __name__ == "__main__":
   for x in range(_sleep_duration):
     print(f'\rExiting in {_sleep_duration - x} seconds...', end="")
     time.sleep(1)
+  print()
