@@ -17,7 +17,7 @@ IF EXIST .\DarkSoulsIII.exe (
     SET config_name=config_eldenring.toml
     SET launcher=ersc_launcher.exe
 )
-IF NOT "%luancher%"=="" (
+IF NOT "%launcher%"=="" (
     IF EXIST .\modengine2_launcher.exe (
         ECHO Launching ModEngine2 with config file: '%config_name%'
         .\modengine2_launcher.exe -t er -c .\%config_name%
@@ -26,7 +26,7 @@ IF NOT "%luancher%"=="" (
         .\%launcher%
     )
 ) ELSE (
-    ECHO Could not find 'modengine2_launcher.exe' or 'seamless co-op launcher'
+    ECHO Could not find 'ModEngine2' or 'Seamless Co-op'
     ECHO Are we in the right directory?
 )
 
