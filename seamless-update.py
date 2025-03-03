@@ -26,7 +26,16 @@ check_dependency('requests')
 import requests, dload
 
 
+script_dir = str()
+SUPPORTED_GAMES = ["ELDEN RING", "DARK SOULS III"]
 
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    script_dir = os.path.dirname(sys.executable)
+else:
+    script_dir = os.path.dirname(__file__)
+
+_sleep_duration = 3
+game = Game()
 
 
 def checkForUpdate(data):
@@ -54,19 +63,6 @@ def checkForUpdate(data):
   return True
 
 
-
-
-
-script_dir = str()
-SUPPORTED_GAMES = ["ELDEN RING", "DARK SOULS III"]
-
-if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
-    script_dir = os.path.dirname(sys.executable)
-else:
-    script_dir = os.path.dirname(__file__)
-
-_sleep_duration = 3
-game = Game()
 
 def set_game():
   global game
@@ -113,14 +109,18 @@ def main():
   
   #Install the new update if needed
   url = f'{game.url}/download/{game.code}sc.zip'
-
+  
+  #check if the download link is valid
+  try:
+    requests.get(url).content.decode('utf-8') #if we can decode as uft-8 then we know it isn't a zip?
+    print("ERROR: Failed to download the update.") 
+    return
+  except Exception:
+    pass
+    
   print(f'Downloading Seamless Coop release {data}...')
   
-  try:
-    dload.save_unzip(url, './', delete_after=True) #unzip to root of script file
-  except Exception:
-    print(f"ERROR: Failed to download the update.")
-    return
+  dload.save_unzip(url, './', delete_after=True) #unzip to root of script file
   
   print('Done!\n')
 
@@ -166,4 +166,4 @@ if __name__ == "__main__":
   for x in range(_sleep_duration):
     print(f'\rExiting in {_sleep_duration - x} seconds...', end="")
     time.sleep(1)
-  print()
+  print('\rExiting in 0 seconds...\n')
