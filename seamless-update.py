@@ -112,10 +112,16 @@ def main():
     
   
   #Install the new update if needed
-  url = f'{game.url}/download/ersc.zip'
+  url = f'{game.url}/download/{game.code}sc.zip'
 
   print(f'Downloading Seamless Coop release {data}...')
-  dload.save_unzip(url, './', delete_after=True) #unzip to root of script file
+  
+  try:
+    dload.save_unzip(url, './', delete_after=True) #unzip to root of script file
+  except Exception:
+    print(f"ERROR: Failed to download the update.")
+    return
+  
   print('Done!\n')
 
 #update version.txt
