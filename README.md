@@ -1,7 +1,7 @@
 # Seamless-Co-op-Updater
 A simple Python script for automatically updating Seamless Co-op mod for [ELDEN RING](https://github.com/LukeYui/EldenRingSeamlessCoopRelease/) and [DARK SOULS III](https://github.com/LukeYui/DarkSouls3SeamlessCoopRelease/)
 
-When the new update is downloaded and applied, the old configuration settings from the mod are transferred to the new one at the cost of losing the comments (limitations due to configparser Python lib).\
+When the new update is downloaded and applied, the old configuration settings from the mod are transferred to the new one.
 
 ***Supported Games = [ ELDEN RING, DARK SOULS III ]***
 
@@ -32,5 +32,7 @@ When the new update is downloaded and applied, the old configuration settings fr
 6. Make sure that the script is selected in the `Add a Non-Steam Game to My Library` window and click `Add Selected Programs`
 7. You can now launch it through Steam and it should work it's magic
 
-(Optional) you can customize the app icon and name of the program by right-clicking on it in Steam and clicking `Properties`\
 **NOTE: Linux may need more finessing to get this to work properly!**
+
+(Optional) you can customize the app icon and name of the program by right-clicking on it in Steam and clicking `Properties`
+
